@@ -16,3 +16,6 @@ npm install uuid
 
 
 <!-- sls dynamodb install -->
+
+
+sls deploy --verbose

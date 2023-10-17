@@ -29,3 +29,107 @@ module.exports.fetchData = async () => {
     body: JSON.stringify({ message: "Data for 5 characters fetched and stored successfully!" })
   };
 };
+  module.exports.createData = async (event) => {
+    const body = JSON.parse(event.body);
+    const params = {
+      TableName: "SWAPIPeople",
+      Item: body
+    };
+    await dynamoDB.put(params).promise();
+  
+    return {
+      statusCode: 201,
+      body: JSON.stringify({ message: "Character created successfully!" })
+    };
+  };
+  
+  module.exports.getAllData = async () => {
+    const params = {
+      TableName: "SWAPIPeople"
+    };
+  
+    const result = await dynamoDB.scan(params).promise();
+  
+    if (!result.Items || result.Items.length === 0) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: "No characters found!" })
+      };
+    }
+  
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result.Items)
+    };
+  };
+  
+  module.exports.getDataById = async (event) => {
+    const id = parseInt(event.pathParameters.id);
+  
+    const params = {
+      TableName: "SWAPIPeople",
+      Key: {
+        id: id
+      }
+    };
+  
+    const result = await dynamoDB.get(params).promise();
+  
+    if (!result.Item) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: "Character not found!" })
+      };
+    }
+  
+    return {
+      statusCode: 200,
+      body: JSON.stringify(result.Item)
+    };
+  };
+  
+  module.exports.updateData = async (event) => {
+    const id = parseInt(event.pathParameters.id);
+    const body = JSON.parse(event.body);
+  
+    const params = {
+      TableName: "SWAPIPeople",
+      Key: {
+        id: id
+      },
+      UpdateExpression: "SET #name = :name, #height = :height",  // Extend this for other attributes
+      ExpressionAttributeNames: {
+        "#name": "name",
+        "#height": "height"
+      },
+      ExpressionAttributeValues: {
+        ":name": body.name,
+        ":height": body.height
+      }
+    };
+  
+    await dynamoDB.update(params).promise();
+  
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Character updated successfully!" })
+    };
+  };
+  
+  module.exports.deleteData = async (event) => {
+    const id = parseInt(event.pathParameters.id);
+  
+    const params = {
+      TableName: "SWAPIPeople",
+      Key: {
+        id: id
+      }
+    };
+  
+    await dynamoDB.delete(params).promise();
+  
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Character deleted successfully!" })
+    };
+  };

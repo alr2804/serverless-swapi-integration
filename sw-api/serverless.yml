@@ -19,6 +19,7 @@ provider:
         Fn::GetAtt:
           - SWAPITable
           - Arn
+      
 
 
 plugins:
@@ -31,10 +32,10 @@ plugins:
 #     handler: handler.hello
 
 
-custom:
-  dynamodb:
-    start:
-      migrate: true
+# custom:
+#   dynamodb:
+#     start:
+#       migrate: true
 
 functions:
   fetchData:
@@ -43,6 +44,46 @@ functions:
       - http:
           method: get
           path: fetch-data
+          cors: true
+  createData:
+    handler: handler.createData
+    events:
+      - http:
+          method: post
+          path: character
+          cors: true
+
+  getAllData:
+    handler: handler.getAllData
+    events:
+      - http:
+          method: get
+          path: characters
+          cors: true
+
+  getDataById:
+    handler: handler.getDataById
+    events:
+      - http:
+          method: get
+          path: character/{id}
+          cors: true
+
+  updateData:
+    handler: handler.updateData
+    events:
+      - http:
+          method: put
+          path: character/{id}
+          cors: true
+
+  deleteData:
+    handler: handler.deleteData
+    events:
+      - http:
+          method: delete
+          path: character/{id}
+          cors: true
 
 resources:
   Resources:
