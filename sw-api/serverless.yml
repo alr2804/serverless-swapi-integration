@@ -25,7 +25,22 @@ provider:
 plugins:
   - serverless-dynamodb-local
   - serverless-offline
+  - serverless-openapi-documentation
+  - serverless-aws-documentation
 
+custom:
+  documentation:
+    api:
+      info:
+        version: "1.0.0"
+        title: "Star Wars Planets API"
+        description: "An API to manage data about planets in the Star Wars universe."
+    models:
+      - name: "Planet"
+        description: "A Star Wars Planet"
+        contentType: "application/json"
+        schema:
+          $ref: "./path_to_swagger_file.yml#/components/schemas/Planet"
 
 # functions:
 #   hello:

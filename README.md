@@ -19,3 +19,12 @@ npm install uuid
 
 
 sls deploy --verbose
+
+
+
+<!-- swagger -->
+
+npm install serverless-openapi-documentation --save-dev
+
+npm install --save-dev serverless-aws-documentation
+
