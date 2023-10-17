@@ -40,6 +40,7 @@ plugins:
 functions:
   fetchData:
     handler: handler.fetchData
+    timeout: 15 
     events:
       - http:
           method: get
@@ -84,6 +85,54 @@ functions:
           method: delete
           path: character/{id}
           cors: true
+  
+  fetchPlanetsData:
+    handler: handler.fetchPlanetsData
+    timeout: 15 
+    events:
+      - http:
+          path: planets/fetch
+          method: get
+
+  createPlanet:
+    handler: handler.createPlanet
+    events:
+      - http:
+          path: planets
+          method: post
+          cors: true
+          
+  getPlanetById:
+    handler: handler.getPlanetById
+    events:
+      - http:
+          path: planets/{id}
+          method: get
+          cors: true
+
+  getAllPlanets:
+    handler: handler.getAllPlanets
+    events:
+      - http:
+          path: planets
+          method: get
+          cors: true
+
+  updatePlanet:
+    handler: handler.updatePlanet
+    events:
+      - http:
+          path: planets/{id}
+          method: put
+          cors: true
+
+  deletePlanet:
+    handler: handler.deletePlanet
+    events:
+      - http:
+          path: planets/{id}
+          method: delete
+          cors: true
 
 resources:
   Resources:
@@ -97,6 +146,20 @@ resources:
         KeySchema:
           - AttributeName: "id"
             KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+    
+    SWAPIPlanetsTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        TableName: SWAPIPlanets
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: N
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
