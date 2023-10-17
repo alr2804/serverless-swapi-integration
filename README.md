@@ -28,3 +28,9 @@ npm install serverless-openapi-documentation --save-dev
 
 npm install --save-dev serverless-aws-documentation
 
+
+<!-- tests -->
+npm install --save-dev jest
+
+npm install --save-dev aws-sdk-mock
+
