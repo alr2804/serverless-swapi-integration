@@ -1,0 +1,22 @@
+{
+  "name": "sw-api",
+  "version": "1.0.0",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1474.0",
+    "axios": "^1.5.1",
+    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-offline": "^13.2.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.3"
+  },
+  "description": ""
+}

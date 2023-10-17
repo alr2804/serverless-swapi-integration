@@ -1,0 +1,61 @@
+service: sw-api
+
+# frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: sa-east-1
+  endpointType: regional  # Setting the API Gateway to be regional
+  iamRoleStatements: # <-- Add this section
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:Scan
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: 
+        Fn::GetAtt:
+          - SWAPITable
+          - Arn
+
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
+
+
+# functions:
+#   hello:
+#     handler: handler.hello
+
+
+custom:
+  dynamodb:
+    start:
+      migrate: true
+
+functions:
+  fetchData:
+    handler: handler.fetchData
+    events:
+      - http:
+          method: get
+          path: fetch-data
+
+resources:
+  Resources:
+    SWAPITable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: "SWAPIPeople"
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "N"  # Note: Change 'S' to 'N' for numeric IDs
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
